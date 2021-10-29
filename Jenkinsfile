@@ -112,19 +112,6 @@ pipeline{
                 }
             }
         }
-        stage("PLACE_HOLDER"){
-            steps{
-                echo "========executing PLACE_HOLDER========"
-            }
-            post{
-                success{
-                    echo "========PLACE_HOLDER executed successfully========"
-                }
-                failure{
-                    echo "========PLACE_HOLDER execution failed========"
-                }
-            }
-        }
     }
     post{
         always{
