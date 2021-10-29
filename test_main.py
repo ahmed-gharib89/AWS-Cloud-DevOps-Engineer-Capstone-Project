@@ -1,4 +1,4 @@
-from urlshort import create_app
+from urlshort.app import create_app
 
 
 def test_shorten(client):

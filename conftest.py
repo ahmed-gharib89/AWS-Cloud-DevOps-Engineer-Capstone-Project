@@ -1,5 +1,5 @@
 import pytest
-from urlshort import create_app
+from urlshort.app import create_app
 
 
 @pytest.fixture
