@@ -1,0 +1,6 @@
+apiVersion: v2
+name: urlshortener
+description: Web application that help shortening urls and help sharing files.
+type: application
+version: 0.1.0
+appVersion: "1.0.3"

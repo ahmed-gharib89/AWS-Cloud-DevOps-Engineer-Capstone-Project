@@ -1,0 +1,34 @@
+# https://kubernetes.io/docs/concepts/workloads/controllers/deployment/
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.urlshort.name }}
+  labels:
+    app: {{ .Values.urlshort.label }}
+spec:
+  replicas: {{ .Values.urlshort.replicas }}
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: {{ .Values.urlshort.name }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.urlshort.name }}
+    spec:
+      containers:
+      - name: {{ .Values.urlshort.name }}
+        image: {{ .Values.urlshort.image }}
+        imagePullPolicy: {{ .Values.urlshort.imagePullPolicy }}
+        resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+        livenessProbe:
+            {{- toYaml .Values.livenessProbe | nindent 12 }}
+        readinessProbe:
+            {{- toYaml .Values.readinessProbe | nindent 12 }}
+        ports:
+        - containerPort: {{ .Values.urlshort.containerPort }}
