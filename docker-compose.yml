@@ -2,7 +2,7 @@ version: "3"
 services:
   urlshort:
     container_name: urlshort
-    image: agharib/urlshort:v1
+    image: agharib/urlshort:v1.0.3
     build:
       context: ./
     ports:
