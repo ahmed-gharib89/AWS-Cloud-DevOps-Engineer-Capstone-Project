@@ -1,7 +1,5 @@
 pipeline{
-    agent{
-        label "any"
-    }
+    agent any
     environment {
         DOCKER_IMAGE_NAME = "agharib/url-short"
     }
