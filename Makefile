@@ -1,6 +1,6 @@
 install:
-	pip install --upgrade pip && \
-		pip install -r requirements.txt
+	pip3 install --upgrade pip3 && \
+		pip3 install -r requirements.txt
 
 format:
 	black urlshort/*.py
@@ -11,6 +11,9 @@ lint:
 
 test:
 	coverage run -m pytest 
+
+test-report:
+	coverage report -m
 
 build:
 	docker-compose build --no-cache
