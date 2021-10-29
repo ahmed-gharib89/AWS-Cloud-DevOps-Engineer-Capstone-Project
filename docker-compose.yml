@@ -1,0 +1,14 @@
+version: "3"
+services:
+  urlshort:
+    container_name: urlshort
+    build:
+      context: ./
+    ports:
+      - "5000:5000"
+    volumes:
+      - urlshort-volume:/app/urlshort/static/user_files
+
+    
+volumes:
+  urlshort-volume:
