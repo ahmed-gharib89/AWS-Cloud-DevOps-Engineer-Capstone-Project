@@ -87,6 +87,13 @@ def create_app(test_config=None):
     def session_api():
         return jsonify(list(session.keys()))
 
+    
+    @app.route("/_status/healthz")
+    def health():
+        return jsonify({
+            "status": "OK"
+        })
+
     return app
 
 if __name__ == "__main__":
