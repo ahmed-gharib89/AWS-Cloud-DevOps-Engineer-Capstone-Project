@@ -71,7 +71,9 @@ pipeline{
         stage("Displaying Test Report"){
             steps{
                 echo "========executing Displaying Test Report========"
-                sh "make test-report"
+                withPythonEnv('python3') {
+                    sh "make test-report"
+                }
             }
             post{
                 success{
