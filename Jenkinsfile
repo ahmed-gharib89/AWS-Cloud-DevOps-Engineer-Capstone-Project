@@ -128,8 +128,10 @@ pipeline{
             }
             steps{
                 echo "====++++executing Test Kubectl Configurations++++===="
-                withKubeConfig([credentialsId: 'kubeconfig']) {
-                    sh 'kubectl get all --all-namespaces'
+                withAWS(credentials: 'aws-credentials', region: 'us-east-1') {
+                    withKubeConfig([credentialsId: 'kubeconfig']) {
+                        sh 'kubectl get all --all-namespaces'
+                    }
                 }
             }
             post{
