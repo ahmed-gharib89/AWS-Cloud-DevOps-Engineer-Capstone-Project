@@ -101,32 +101,15 @@ pipeline{
                 }
             }
         }
-        stage("Get Build Number"){
-            steps{
-                echo "====++++executing Get Build Number++++===="
-                script {
-                    def buildNumber = Jenkins.instance.getItem('urlshort').getItem('dev').lastSuccessfulBuild.number
-                    echo "====++++Build Number is $buildNumber++++===="
-                }
-            }
-            post{
-                always{
-                    echo "====++++always++++===="
-                }
-                success{
-                    echo "====++++Get Build Number executed successfully++++===="
-                }
-                failure{
-                    echo "====++++Get Build Number execution failed++++===="
-                }
-        
-            }
-        }
         stage("Replace image version with build number"){
             steps{
                 echo "====++++executing Replace image version with build number++++===="
-                sh "sed -i '12s/(.+?)\\.[0-9]+/\\1\\.$buildNumber/' urlshort-chart/values.yaml"
-                sh "cat urlshort-chart/values.yaml"
+                script {
+                    def buildNumber = Jenkins.instance.getItem('urlshort').getItem('dev').lastSuccessfulBuild.number
+                    echo "====++++Build Number is $buildNumber++++===="
+                    sh "sed -i '12s/(.+?)\\.[0-9]+/\\1\\.$buildNumber/' urlshort-chart/values.yaml"
+                    sh "cat urlshort-chart/values.yaml"
+                }
             }
             post{
                 success{
@@ -141,8 +124,12 @@ pipeline{
         stage("Replace App version in chart.yml"){
             steps{
                 echo "====++++executing Replace App version in chart.yml++++===="
-                sh "sed -i '6s/(.+?)\\.[0-9]+/\\1\\.$buildNumber/' urlshort-chart/Chart.yaml"
-                sh "cat urlshort-chart/Chart.yaml"
+                script {
+                    def buildNumber = Jenkins.instance.getItem('urlshort').getItem('dev').lastSuccessfulBuild.number
+                    echo "====++++Build Number is $buildNumber++++===="
+                    sh "sed -i '6s/(.+?)\\.[0-9]+/\\1\\.$buildNumber/' urlshort-chart/Chart.yaml"
+                    sh "cat urlshort-chart/Chart.yaml"
+                }
             }
             post{
                 success{
