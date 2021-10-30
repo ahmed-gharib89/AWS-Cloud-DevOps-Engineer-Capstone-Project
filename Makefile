@@ -10,7 +10,7 @@ lint:
 	pylint --disable=R,C,W1203,W0702 urlshort/app.py
 
 test:
-	coverage run -m pytest -VV
+	coverage run -m pytest -vv
 
 test-report:
 	coverage report -m
