@@ -156,10 +156,14 @@ pipeline{
             post{
                 success{
                     echo "====++++Deploy to UAT environment executed successfully++++===="
-                    sh '''
-                        URL=$(kubectl get svc -n uat | grep elb.amazonaws | awk '{print $4}')
-                        curl -X GET http://$URL/_status/healthz
-                    '''
+                    withAWS(credentials: 'aws-credentials', region: 'us-east-1') {
+                    withKubeConfig([credentialsId: 'kubeconfig']) {
+                        sh '''
+                            URL=$(kubectl get svc -n uat | grep elb.amazonaws | awk '{print $4}')
+                            curl -X GET http://$URL/_status/healthz
+                        '''
+                    }
+                }
                 }
                 failure{
                     echo "====++++Deploy to UAT environment execution failed++++===="
@@ -181,12 +185,14 @@ pipeline{
             }
             post{
                 success{
-                    echo "====++++Deploy to Production environment executed successfully++++===="
-                    sh '''
-                        URL=$(kubectl get svc -n production | grep elb.amazonaws | awk '{print $4}')
-                        curl -X GET http://$URL/_status/healthz
-                    '''
-                }
+                    echo "====++++Deploy to UAT environment executed successfully++++===="
+                    withAWS(credentials: 'aws-credentials', region: 'us-east-1') {
+                    withKubeConfig([credentialsId: 'kubeconfig']) {
+                        sh '''
+                            URL=$(kubectl get svc -n production | grep elb.amazonaws | awk '{print $4}')
+                            curl -X GET http://$URL/_status/healthz
+                        '''
+                    }
                 failure{
                     echo "====++++Deploy to Production environment execution failed++++===="
                 }
