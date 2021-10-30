@@ -5,7 +5,7 @@ pipeline{
     }
     stages{
         when {
-            branch = "dev"
+            branch 'dev'
         }
         stage("Installing Requirments"){
             steps{
