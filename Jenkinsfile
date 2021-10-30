@@ -5,9 +5,6 @@ pipeline{
     }
     stages{
         stage("Installing Requirments"){
-            when {
-                branch 'dev'
-            }
             steps{
                 echo "========executing Installing Requirments========"
                 withPythonEnv('python3') {
@@ -24,9 +21,6 @@ pipeline{
             }
         }
         stage("Formating the code with black"){
-            when {
-                branch 'dev'
-            }
             steps{
                 echo "========executing Formating the code with black========"
                 withPythonEnv('python3') {
@@ -43,9 +37,6 @@ pipeline{
             }
         }
         stage("Linting"){
-            when {
-                branch 'dev'
-            }
             steps{
                 echo "========executing Linting========"
                 withPythonEnv('python3') {
@@ -62,9 +53,6 @@ pipeline{
             }
         }
         stage("Testing the code"){
-            when {
-                branch 'dev'
-            }
             steps{
                 echo "========executing Testing the code========"
                 withPythonEnv('python3') {
@@ -81,9 +69,6 @@ pipeline{
             }
         }
         stage("Displaying Test Report"){
-            when {
-                branch 'dev'
-            }
             steps{
                 echo "========executing Displaying Test Report========"
                 withPythonEnv('python3') {
@@ -100,9 +85,6 @@ pipeline{
             }
         }
         stage('Build Docker Image') {
-            when {
-                branch 'dev'
-            }
             steps {
                 script {
                     app = docker.build(DOCKER_IMAGE_NAME)
@@ -110,9 +92,6 @@ pipeline{
             }
         }
         stage('Push Docker Image') {
-            when {
-                branch 'dev'
-            }
             steps {
                 script {
                     docker.withRegistry('https://registry.hub.docker.com', 'docker-login') {
@@ -128,6 +107,8 @@ pipeline{
             }
             steps{
                 echo "====++++executing Test Kubectl Configurations++++===="
+                def buildNumber = Jenkins.instance.getItem('urlshort').getItem('dev').lastSuccessfulBuild.number
+                echo "====++++Build Number is $buildNumber++++===="
                 withAWS(credentials: 'aws-credentials', region: 'us-east-1') {
                     withKubeConfig([credentialsId: 'kubeconfig']) {
                         sh 'kubectl get all --all-namespaces'
