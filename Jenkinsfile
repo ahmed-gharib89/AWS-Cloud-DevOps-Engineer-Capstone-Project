@@ -106,7 +106,7 @@ pipeline{
         success{
             echo "========pipeline executed successfully ========"
             checkout( [$class: 'GitSCM', branches: [[name: 'dev']], 
-                       extensions: [[$class: 'PreBuildMerge', options: [mergeRemote: 'remotes/origin/', mergeTarget: 'uat']],
+                       extensions: [[$class: 'PreBuildMerge', options: [mergeRemote: 'remotes/origin', mergeTarget: 'uat']],
                        [$class: 'AuthorInChangelog']], userRemoteConfigs: [[credentialsId: 'github-token', url: 'https://github.com/ahmed-gharib89/AWS-Cloud-DevOps-Engineer-Capstone-Project']]])        }
         failure{
             echo "========pipeline execution failed========"
