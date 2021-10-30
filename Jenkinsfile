@@ -4,10 +4,10 @@ pipeline{
         DOCKER_IMAGE_NAME = "agharib/url-short"
     }
     stages{
-        when {
-            branch 'dev'
-        }
         stage("Installing Requirments"){
+            when {
+                branch 'dev'
+            }
             steps{
                 echo "========executing Installing Requirments========"
                 withPythonEnv('python3') {
@@ -24,6 +24,9 @@ pipeline{
             }
         }
         stage("Formating the code with black"){
+            when {
+                branch 'dev'
+            }
             steps{
                 echo "========executing Formating the code with black========"
                 withPythonEnv('python3') {
@@ -40,6 +43,9 @@ pipeline{
             }
         }
         stage("Linting"){
+            when {
+                branch 'dev'
+            }
             steps{
                 echo "========executing Linting========"
                 withPythonEnv('python3') {
@@ -56,6 +62,9 @@ pipeline{
             }
         }
         stage("Testing the code"){
+            when {
+                branch 'dev'
+            }
             steps{
                 echo "========executing Testing the code========"
                 withPythonEnv('python3') {
@@ -72,6 +81,9 @@ pipeline{
             }
         }
         stage("Displaying Test Report"){
+            when {
+                branch 'dev'
+            }
             steps{
                 echo "========executing Displaying Test Report========"
                 withPythonEnv('python3') {
@@ -88,6 +100,9 @@ pipeline{
             }
         }
         stage('Build Docker Image') {
+            when {
+                branch 'dev'
+            }
             steps {
                 script {
                     app = docker.build(DOCKER_IMAGE_NAME)
@@ -95,6 +110,9 @@ pipeline{
             }
         }
         stage('Push Docker Image') {
+            when {
+                branch 'dev'
+            }
             steps {
                 script {
                     docker.withRegistry('https://registry.hub.docker.com', 'docker-login') {
@@ -108,9 +126,6 @@ pipeline{
     post{
         success{
             echo "========pipeline executed successfully ========"
-            checkout( [$class: 'GitSCM', branches: [[name: 'uat']], 
-                       extensions: [[$class: 'PreBuildMerge', options: [mergeRemote: 'remotes/origin', mergeTarget: 'dev']],
-                       [$class: 'AuthorInChangelog']], userRemoteConfigs: [[credentialsId: 'github-token', url: 'https://github.com/ahmed-gharib89/AWS-Cloud-DevOps-Engineer-Capstone-Project']]])        }
         failure{
             echo "========pipeline execution failed========"
         }
