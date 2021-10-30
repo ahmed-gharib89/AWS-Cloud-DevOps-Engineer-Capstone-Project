@@ -54,10 +54,20 @@ Step 5: Test your pipeline
 * Take a screenshot of the Jenkins pipeline showing deployment.
 
 Blue version of the webapp:
+
 ![Blue Version](https://i.imgur.com/XfofELd.png)
 
 Aprroval step to deploy to production:
+
 ![Deployment Approval](https://i.imgur.com/BKBqGr8.png)
+
+Rollout Status:
+
+![Rollout update Status](https://i.imgur.com/HpFKw6L.png)
+
+Green version of the webapp:
+
+![Green Version](https://i.imgur.com/pjQHYhl.png)
 
 #### Find me in social media
 
