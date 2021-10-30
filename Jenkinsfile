@@ -101,14 +101,33 @@ pipeline{
                 }
             }
         }
+        stage("Get Build Number"){
+            steps{
+                echo "====++++executing Get Build Number++++===="
+                script {
+                    def buildNumber = Jenkins.instance.getItem('urlshort').getItem('dev').lastSuccessfulBuild.number
+                    echo "====++++Build Number is $buildNumber++++===="
+                }
+            }
+            post{
+                always{
+                    echo "====++++always++++===="
+                }
+                success{
+                    echo "====++++Get Build Number executed successfully++++===="
+                }
+                failure{
+                    echo "====++++Get Build Number execution failed++++===="
+                }
+        
+            }
+        }
         stage("Test Kubectl Configurations"){
             when {
                 branch 'uat'
             }
             steps{
                 echo "====++++executing Test Kubectl Configurations++++===="
-                def buildNumber = Jenkins.instance.getItem('urlshort').getItem('dev').lastSuccessfulBuild.number
-                echo "====++++Build Number is $buildNumber++++===="
                 withAWS(credentials: 'aws-credentials', region: 'us-east-1') {
                     withKubeConfig([credentialsId: 'kubeconfig']) {
                         sh 'kubectl get all --all-namespaces'
