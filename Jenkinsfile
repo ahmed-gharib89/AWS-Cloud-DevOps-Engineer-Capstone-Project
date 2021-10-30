@@ -122,24 +122,86 @@ pipeline{
         
             }
         }
-        stage("Test Kubectl Configurations"){
+        stage("Replace image version with build number"){
+            steps{
+                echo "====++++executing Replace image version with build number++++===="
+                sh "sed -i '12s/(.+?)\.[0-9]+/\1\.$buildNumber/' urlshort-chart/values.yaml"
+                sh "cat urlshort-chart/values.yaml"
+            }
+            post{
+                success{
+                    echo "====++++Replace image version with build number executed successfully++++===="
+                }
+                failure{
+                    echo "====++++Replace image version with build number execution failed++++===="
+                }
+        
+            }
+        }
+        stage("Replace App version in chart.yml"){
+            steps{
+                echo "====++++executing Replace App version in chart.yml++++===="
+                sh "sed -i '6s/(.+?)\.[0-9]+/\1\.$buildNumber/' urlshort-chart/Chart.yaml"
+                sh "cat urlshort-chart/Chart.yaml"
+            }
+            post{
+                success{
+                    echo "====++++Replace App version in chart.yml executed successfully++++===="
+                }
+                failure{
+                    echo "====++++Replace App version in chart.yml execution failed++++===="
+                }
+        
+            }
+        }
+        stage("Deploy to UAT environment"){
             when {
                 branch 'uat'
             }
             steps{
-                echo "====++++executing Test Kubectl Configurations++++===="
+                echo "====++++executing Deploy to UAT environment++++===="
                 withAWS(credentials: 'aws-credentials', region: 'us-east-1') {
                     withKubeConfig([credentialsId: 'kubeconfig']) {
-                        sh 'kubectl get all --all-namespaces'
+                        sh 'helm upgrade urlshort urlshort-chart --namespace uat'
                     }
                 }
             }
             post{
                 success{
-                    echo "====++++Test Kubectl Configurations executed successfully++++===="
+                    echo "====++++Deploy to UAT environment executed successfully++++===="
+                    sh '''
+                        URL=$(kubectl get svc -n uat | grep elb.amazonaws | awk '{print $4}')
+                        curl -X GET http://$URL/_status/healthz
+                    '''
                 }
                 failure{
-                    echo "====++++Test Kubectl Configurations execution failed++++===="
+                    echo "====++++Deploy to UAT environment execution failed++++===="
+                }
+            }
+        }
+        stage("Deploy to Production environment"){
+            when {
+                branch 'main'
+            }
+            steps{
+                input 'Deploy to Production?'
+                echo "====++++executing Deploy to Production environment++++===="
+                withAWS(credentials: 'aws-credentials', region: 'us-east-1') {
+                    withKubeConfig([credentialsId: 'kubeconfig']) {
+                        sh 'helm upgrade urlshort urlshort-chart --namespace production'
+                    }
+                }
+            }
+            post{
+                success{
+                    echo "====++++Deploy to Production environment executed successfully++++===="
+                    sh '''
+                        URL=$(kubectl get svc -n production | grep elb.amazonaws | awk '{print $4}')
+                        curl -X GET http://$URL/_status/healthz
+                    '''
+                }
+                failure{
+                    echo "====++++Deploy to Production environment execution failed++++===="
                 }
             }
         }
