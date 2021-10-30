@@ -7,7 +7,7 @@ format:
 
 lint:
 	docker run --rm -i hadolint/hadolint < Dockerfile
-	pylint --disable=R,C,W1203,W0702 urlshort/app.py
+	pylint --disable=R,W1203,W0702 urlshort/app.py
 
 test:
 	coverage run -m pytest -vv
