@@ -128,10 +128,8 @@ pipeline{
             }
             steps{
                 echo "====++++executing Test Kubectl Configurations++++===="
-                script {
-                    withKubeConfig([credentialsId: 'kubeconfig']) {
-                        sh 'kubectl get all --all-namespaces'
-                    }
+                withKubeConfig([credentialsId: 'kubeconfig']) {
+                    sh 'kubectl get all --all-namespaces'
                 }
             }
             post{
