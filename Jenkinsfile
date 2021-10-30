@@ -122,6 +122,27 @@ pipeline{
                 }
             }
         }
+        stage("Test Kubectl Configurations"){
+            when {
+                branch 'uat'
+            }
+            steps{
+                echo "====++++executing Test Kubectl Configurations++++===="
+                script {
+                    withKubeConfig([credentialsId: 'kubeconfig']) {
+                        sh 'kubectl get all --all-namespaces'
+                    }
+                }
+            }
+            post{
+                success{
+                    echo "====++++Test Kubectl Configurations executed successfully++++===="
+                }
+                failure{
+                    echo "====++++Test Kubectl Configurations execution failed++++===="
+                }
+            }
+        }
     }
     post{
         success{
