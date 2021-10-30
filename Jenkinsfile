@@ -125,7 +125,7 @@ pipeline{
         stage("Replace image version with build number"){
             steps{
                 echo "====++++executing Replace image version with build number++++===="
-                sh "sed -i '12s/(.+?)\.[0-9]+/\1\.$buildNumber/' urlshort-chart/values.yaml"
+                sh "sed -i '12s/(.+?)\\.[0-9]+/\\1\\.$buildNumber/' urlshort-chart/values.yaml"
                 sh "cat urlshort-chart/values.yaml"
             }
             post{
@@ -141,7 +141,7 @@ pipeline{
         stage("Replace App version in chart.yml"){
             steps{
                 echo "====++++executing Replace App version in chart.yml++++===="
-                sh "sed -i '6s/(.+?)\.[0-9]+/\1\.$buildNumber/' urlshort-chart/Chart.yaml"
+                sh "sed -i '6s/(.+?)\\.[0-9]+/\\1\\.$buildNumber/' urlshort-chart/Chart.yaml"
                 sh "cat urlshort-chart/Chart.yaml"
             }
             post{
