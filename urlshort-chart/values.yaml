@@ -1,0 +1,40 @@
+service:
+  name: urlshort
+  type: LoadBalancer
+  app: urlshort
+  protocol: TCP
+  port: 80
+  targetPort: 5000
+urlshort:
+  name: urlshort
+  label: urlshort
+  replicas: 3
+  image: agharib/urlshort:v1.0.3
+  imagePullPolicy: IfNotPresent
+  containerPort: 5000
+resources: 
+  limits:
+    cpu: 100m
+    memory: 128Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+livenessProbe:
+  httpGet:
+    path: /
+    port: 5000
+  initialDelaySeconds: 5
+  timeoutSeconds: 5
+  successThreshold: 1
+  failureThreshold: 3
+  periodSeconds: 10
+readinessProbe:
+  httpGet:
+    path: /_status/healthz
+    port: 5000
+  initialDelaySeconds: 5
+  timeoutSeconds: 2
+  successThreshold: 1
+  failureThreshold: 3
+  periodSeconds: 10
+  

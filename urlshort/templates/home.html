@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Home
+{% endblock title %}
+
+
+{% block content %}
+<h1 class="mb-5">URL Shortner</h1>
+
+{% for message in get_flashed_messages() %}
+<div class="alert alert-warning">{{ message }}</div>
+{% endfor %}
+
+<h1 class="mb-5">URL Shortener</h1>
+
+<div class="card-deck mb-3 row">
+    <div class="col-md-6">
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal text-center">Website</h4>
+            </div>
+            <div class="card-body">
+                <form action="your-url" method="post">
+                    <div class="row mb-1 p-2">
+                        <label for="url" class="form-label">Website URL</label>
+                        <input type="url" name="url" class="form-control" id="url" placeholder="http://example.com"
+                            value="" required>
+                    </div>
+                    <div class="row mb-1 p-2">
+                        <label for="code" class="form-label">Short Name</label>
+                        <input type="text" name="code" class="form-control" id="code" placeholder="abc" value=""
+                            required>
+                    </div>
+                    <hr my-3>
+
+                    <button type="submit" class="w-100 btn btn-primary btn-lg mb-3">Shorten</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card mb-4 shadow-sm">
+            <div class="card-header">
+                <h4 class="my-0 font-weight-normal text-center">File</h4>
+            </div>
+            <div class="card-body">
+                <form action="your-url" method="post" enctype="multipart/form-data">
+                    <div class="row mb-1 p-2">
+                        <label for="file" class="form-label">File</label>
+                        <input type="file" name="file" class="form-control" id="file" placeholder="http://example.com"
+                            value="" required>
+                    </div>
+
+                    <div class="row mb-1 p-2">
+                        <label for="code" class="form-label">Short Name</label>
+                        <input type="text" name="code" class="form-control" id="code" placeholder="abc" value=""
+                            required>
+                    </div>
+                    <hr my-3>
+
+                    <button type="submit" class="w-100 btn btn-primary btn-lg mb-3">Shorten</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+{% if codes %}
+<div class="row mb-5">
+    <div class="col-md-6">
+        <h2 class="mb-3">
+            Codes you have created
+        </h2>
+        <ul class="list-group list-unstyled list-group-flush">
+            {% for code in codes %}
+            <li>
+                <a class="list-group-item list-group-item-light list-group-item-action"
+                    href="{{ url_for('redirect_to_url', code=code) }}">{{
+                    code }}</a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

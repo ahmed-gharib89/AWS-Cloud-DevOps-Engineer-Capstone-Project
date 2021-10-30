@@ -1,0 +1,15 @@
+version: "3"
+services:
+  urlshort:
+    container_name: urlshort
+    image: agharib/urlshort:v1.0.3
+    build:
+      context: ./
+    ports:
+      - "5000:5000"
+    volumes:
+      - urlshort-volume:/app/urlshort/static/user_files
+
+    
+volumes:
+  urlshort-volume:
