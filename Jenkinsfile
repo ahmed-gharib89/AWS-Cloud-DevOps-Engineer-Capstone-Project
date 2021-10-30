@@ -56,7 +56,7 @@ pipeline{
             steps{
                 echo "========executing Testing the code========"
                 withPythonEnv('python3') {
-                    sh "make lint"
+                    sh "make test"
                 }
             }
             post{
@@ -68,10 +68,23 @@ pipeline{
                 }
             }
         }
-        stage('Build Docker Image') {
-            when {
-                branch 'master'
+        stage("Displaying Test Report"){
+            steps{
+                echo "========executing Displaying Test Report========"
+                withPythonEnv('python3') {
+                    sh "make test-report"
+                }
             }
+            post{
+                success{
+                    echo "========Displaying Test Report executed successfully========"
+                }
+                failure{
+                    echo "========Displaying Test Report execution failed========"
+                }
+            }
+        }
+        stage('Build Docker Image') {
             steps {
                 script {
                     app = docker.build(DOCKER_IMAGE_NAME)
