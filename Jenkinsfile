@@ -7,7 +7,9 @@ pipeline{
         stage("Installing Requirments"){
             steps{
                 echo "========executing Installing Requirments========"
-                sh "make install"
+                withPythonEnv('python3') {
+                    sh "make install"
+                }
             }
             post{
                 success{
@@ -21,7 +23,9 @@ pipeline{
         stage("Formating the code with black"){
             steps{
                 echo "========executing Formating the code with black========"
-                sh "make format"
+                withPythonEnv('python3') {
+                    sh "make format"
+                }
             }
             post{
                 success{
@@ -35,7 +39,9 @@ pipeline{
         stage("Linting"){
             steps{
                 echo "========executing Linting========"
-                sh "make lint"
+                withPythonEnv('python3') {
+                    sh "make lint"
+                }
             }
             post{
                 success{
@@ -49,7 +55,9 @@ pipeline{
         stage("Testing the code"){
             steps{
                 echo "========executing Testing the code========"
-                sh "make test"
+                withPythonEnv('python3') {
+                    sh "make lint"
+                }
             }
             post{
                 success{
