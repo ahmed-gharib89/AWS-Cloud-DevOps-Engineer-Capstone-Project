@@ -107,7 +107,7 @@ pipeline{
                 script {
                     def buildNumber = Jenkins.instance.getItem('urlshort').getItem('dev').lastSuccessfulBuild.number
                     echo "====++++Build Number is $buildNumber++++===="
-                    sh "sed -i '12s/(.+?)\\.[0-9]+/\\1\\.$buildNumber/' urlshort-chart/values.yaml"
+                    sh "sed -i -E '12s/(.+?)\\.[0-9]+/\\1\\.$buildNumber/' urlshort-chart/values.yaml"
                     sh "cat urlshort-chart/values.yaml"
                 }
             }
@@ -127,7 +127,7 @@ pipeline{
                 script {
                     def buildNumber = Jenkins.instance.getItem('urlshort').getItem('dev').lastSuccessfulBuild.number
                     echo "====++++Build Number is $buildNumber++++===="
-                    sh "sed -i '6s/(.+?)\\.[0-9]+/\\1\\.$buildNumber/' urlshort-chart/Chart.yaml"
+                    sh "sed -i -E '6s/(.+?)\\.[0-9]+/\\1\\.$buildNumber/' urlshort-chart/Chart.yaml"
                     sh "cat urlshort-chart/Chart.yaml"
                 }
             }
