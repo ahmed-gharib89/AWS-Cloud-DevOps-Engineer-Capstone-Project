@@ -4,6 +4,9 @@ pipeline{
         DOCKER_IMAGE_NAME = "agharib/url-short"
     }
     stages{
+        when {
+            branch = "dev"
+        }
         stage("Installing Requirments"){
             steps{
                 echo "========executing Installing Requirments========"
