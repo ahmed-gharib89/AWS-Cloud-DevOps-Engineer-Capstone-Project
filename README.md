@@ -56,6 +56,9 @@ Step 5: Test your pipeline
 Blue version of the webapp:
 ![Blue Version](https://i.imgur.com/XfofELd.png)
 
+Aprroval step to deploy to production:
+![Deployment Approval](https://i.imgur.com/BKBqGr8.png)
+
 #### Find me in social media
 
 [![Github](https://img.shields.io/badge/-Github-black?style=flat&labelColor=black&logo=github&logoColor=white "Github")](https://github.com/ahmed-gharib89 "Github")

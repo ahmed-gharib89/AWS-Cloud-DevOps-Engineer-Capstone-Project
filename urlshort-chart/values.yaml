@@ -9,7 +9,7 @@ urlshort:
   name: urlshort
   label: urlshort
   replicas: 3
-  image: agharib/urlshort:v1.0.3
+  image: agharib/url-short:v1.0.3
   imagePullPolicy: IfNotPresent
   containerPort: 5000
 resources: 
