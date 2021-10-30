@@ -6,12 +6,11 @@ format:
 	black urlshort/*.py
 
 lint:
-	# docker run --rm -i hadolint/hadolint < Dockerfile
-	whoami
+	docker run --rm -i hadolint/hadolint < Dockerfile
 	pylint --disable=R,C,W1203,W0702 urlshort/app.py
 
 test:
-	coverage run -m pytest 
+	coverage run -m pytest -VV
 
 test-report:
 	coverage report -m
