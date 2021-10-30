@@ -68,22 +68,6 @@ pipeline{
                 }
             }
         }
-        stage("Displaying Test Report"){
-            steps{
-                echo "========executing Displaying Test Report========"
-                withPythonEnv('python3') {
-                    sh "make test-report"
-                }
-            }
-            post{
-                success{
-                    echo "========Displaying Test Report executed successfully========"
-                }
-                failure{
-                    echo "========Displaying Test Report execution failed========"
-                }
-            }
-        }
         stage('Build Docker Image') {
             when {
                 branch 'master'
