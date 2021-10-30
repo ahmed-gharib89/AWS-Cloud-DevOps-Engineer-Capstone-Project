@@ -4,6 +4,9 @@ pipeline{
         DOCKER_IMAGE_NAME = "agharib/url-short"
     }
     stages{
+        when {
+            branch = "dev"
+        }
         stage("Installing Requirments"){
             steps{
                 echo "========executing Installing Requirments========"
@@ -101,23 +104,13 @@ pipeline{
                 }
             }
         }
-        stage("PLACE_HOLDER"){
-            steps{
-                echo "========executing PLACE_HOLDER========"
-            }
-            post{
-                success{
-                    echo "========PLACE_HOLDER executed successfully========"
-                }
-                failure{
-                    echo "========PLACE_HOLDER execution failed========"
-                }
-            }
-        }
     }
     post{
         success{
             echo "========pipeline executed successfully ========"
+            checkout ( [$class: 'GitSCM', branches: [[name: 'dev']], 
+                        extensions: [[$class: 'PreBuildMerge', options: [mergeTarget: 'uat']]], 
+                        userRemoteConfigs: [[credentialsId: 'github-token', url: 'https://github.com/ahmed-gharib89/AWS-Cloud-DevOps-Engineer-Capstone-Project']]])
         }
         failure{
             echo "========pipeline execution failed========"
